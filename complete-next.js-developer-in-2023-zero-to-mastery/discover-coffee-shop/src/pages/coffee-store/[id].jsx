@@ -33,7 +33,7 @@ export default function CoffeeStore({ coffeeStore }) {
                 <div className={styles.container}>
                     <div className={styles.col1}>
                         <div className={styles.backToHomeLink}>
-                            <Link href="/">Back to home</Link>
+                            <Link href="/">← Back to home</Link>
                         </div>
                         <div className={styles.nameWrapper}>
                             <h1 className={styles.name}>{coffeeStore?.name}</h1>
@@ -51,19 +51,33 @@ export default function CoffeeStore({ coffeeStore }) {
                     </div>
 
                     <div className={cls("glass", styles.col2)}>
-                        <div className={styles.iconWrapper}>
-                            <Image src={places} width={24} height={24} alt="" />
-                            <p className={styles.text}>
-                                {coffeeStore?.location?.address}
-                            </p>
-                        </div>
+                        {coffeeStore.address && (
+                            <div className={styles.iconWrapper}>
+                                <Image
+                                    src={places}
+                                    width={24}
+                                    height={24}
+                                    alt=""
+                                />
+                                <p className={styles.text}>
+                                    {coffeeStore?.address}
+                                </p>
+                            </div>
+                        )}
 
-                        <div className={styles.iconWrapper}>
-                            <Image src={nearMe} width={24} height={24} alt="" />
-                            <p className={styles.text}>
-                                {coffeeStore?.location?.cross_street}
-                            </p>
-                        </div>
+                        {coffeeStore.cross_street && (
+                            <div className={styles.iconWrapper}>
+                                <Image
+                                    src={nearMe}
+                                    width={24}
+                                    height={24}
+                                    alt=""
+                                />
+                                <p className={styles.text}>
+                                    {coffeeStore?.cross_street}
+                                </p>
+                            </div>
+                        )}
 
                         <div className={styles.iconWrapper}>
                             <Image src={star} width={24} height={24} alt="" />
@@ -90,7 +104,7 @@ export async function getStaticPaths() {
         paths: coffeeStores.map((store) => {
             return {
                 params: {
-                    id: String(store.fsq_id),
+                    id: String(store.id),
                 },
             };
         }),
@@ -106,7 +120,7 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             coffeeStore: coffeeStores.find(
-                (store) => String(store.fsq_id) === String(id)
+                (store) => String(store.id) === String(id)
             ),
         },
     };
